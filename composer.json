@@ -1,0 +1,17 @@
+{
+    "name": "swiftotter/driver-magento1",
+    "description": "The Magento 1 transformation component",
+    "type": "library",
+    "require": {
+        "swiftotter/driver": "*"
+    },
+    "autoload": {
+        "psr-4": {"Driver\\": "src/"}
+    },
+    "authors": [
+        {
+            "name": "Joseph Maxwell",
+            "email": "joseph@swiftotter.com"
+        }
+    ]
+}

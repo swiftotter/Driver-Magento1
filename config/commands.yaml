@@ -1,0 +1,11 @@
+commands:
+  m1-clear-customers:
+    class: \Driver\Magento1\Transformations\ClearCustomers
+  m1-clear-logs:
+    class: \Driver\Magento1\Transformations\ClearLogs
+  m1-clear-orders:
+    class: \Driver\Magento1\Transformations\ClearOrders
+  m1-clear-quotes:
+    class: \Driver\Magento1\Transformations\ClearQuotes
+  m1-clear-reports:
+    class: \Driver\Magento1\Transformations\ClearReports
