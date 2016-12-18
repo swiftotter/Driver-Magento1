@@ -17,16 +17,13 @@
  * @package default
  **/
 
-namespace Driver\Commands\Transformations\Magento1;
+namespace Driver\Magento1\Transformations;
 
 use Driver\Engines\MySql\Sandbox\Utilities;
 use Driver\Pipeline\Environment\EnvironmentInterface;
 
 trait ClearTrait
 {
-    /** @var array $tablesToClear */
-    protected $tablesToClear;
-
     /** @var Utilities $utilities */
     protected $utilities;
 

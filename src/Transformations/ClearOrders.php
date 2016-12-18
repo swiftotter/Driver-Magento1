@@ -17,7 +17,7 @@
  * @package default
  **/
 
-namespace Driver\Commands\Transformations\Magento1;
+namespace Driver\Magento1\Transformations;
 
 use Driver\Commands\CommandInterface;
 use Driver\Engines\MySql\Sandbox\Connection;
