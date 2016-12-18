@@ -26,7 +26,7 @@ use Driver\Pipeline\Environment\EnvironmentInterface;
 use Driver\Pipeline\Transport\TransportInterface;
 use Symfony\Component\Console\Command\Command;
 
-class ClearQuotes extends Command implements CommandInterface
+class ClearSwiftOtter extends Command implements CommandInterface
 {
     use ClearTrait;
 
@@ -35,13 +35,12 @@ class ClearQuotes extends Command implements CommandInterface
     private $properties;
 
     protected $tablesToClear = [
-        'sales_flat_quote',
-        'sales_flat_quote_address',
-        'sales_flat_quote_address_item',
-        'sales_flat_quote_item',
-        'sales_flat_quote_item_option',
-        'sales_flat_quote_payment',
-        'sales_flat_quote_shipping_rate'
+        'swiftotter_adminhtml_token',
+        'swiftotter_inventory_adjustment_log',
+        'swiftotter_report_product_sale_region',
+        'swiftotter_sales_order_product',
+        'swiftotter_search_cache',
+        'swiftotter_strikeiron_salestax_record'
     ];
 
     public function __construct(Connection $connection, Utilities $utilities, array $properties = [])

@@ -22,24 +22,49 @@ namespace Driver\Commands\Transformations\Magento1;
 use Driver\Commands\CommandInterface;
 use Driver\Engines\MySql\Sandbox\Connection;
 use Driver\Engines\MySql\Sandbox\Utilities;
-use Driver\Pipes\Transport\TransportInterface;
+use Driver\Pipeline\Environment\EnvironmentInterface;
+use Driver\Pipeline\Transport\TransportInterface;
 use Symfony\Component\Console\Command\Command;
 
 class ClearCustomers extends Command implements CommandInterface
 {
-    private $connection;
-    private $utilities;
+    use ClearTrait;
 
-    public function __construct(Connection $connection, Utilities $utilities)
+    private $connection;
+    protected $utilities;
+    private $properties;
+
+    protected $tablesToClear = [
+        'customer_address_entity',
+        'customer_address_entity_datetime',
+        'customer_address_entity_decimal',
+        'customer_address_entity_int',
+        'customer_address_entity_text',
+        'customer_address_entity_varchar',
+        'customer_entity',
+        'customer_entity_datetime',
+        'customer_entity_decimal',
+        'customer_entity_int',
+        'customer_entity_text',
+        'customer_entity_varchar'
+    ];
+
+    public function __construct(Connection $connection, Utilities $utilities, array $properties = [])
     {
         $this->connection = $connection->getConnection();
         $this->utilities = $utilities;
+        $this->properties = $properties;
 
         parent::__construct('mysql-transformations-clear-orders');
     }
 
-    public function go(TransportInterface $transport)
+    public function getProperties()
     {
-        $this->utilities->clearTable($this->utilities->tableName('mage_customer_entity'));
+        return $this->properties;
+    }
+
+    public function go(TransportInterface $transport, EnvironmentInterface $environment)
+    {
+        $this->clear($environment);
     }
 }

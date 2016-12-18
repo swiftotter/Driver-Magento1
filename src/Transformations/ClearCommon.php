@@ -26,7 +26,7 @@ use Driver\Pipeline\Environment\EnvironmentInterface;
 use Driver\Pipeline\Transport\TransportInterface;
 use Symfony\Component\Console\Command\Command;
 
-class ClearQuotes extends Command implements CommandInterface
+class ClearCommon extends Command implements CommandInterface
 {
     use ClearTrait;
 
@@ -35,13 +35,18 @@ class ClearQuotes extends Command implements CommandInterface
     private $properties;
 
     protected $tablesToClear = [
-        'sales_flat_quote',
-        'sales_flat_quote_address',
-        'sales_flat_quote_address_item',
-        'sales_flat_quote_item',
-        'sales_flat_quote_item_option',
-        'sales_flat_quote_payment',
-        'sales_flat_quote_shipping_rate'
+        'authnetcim_card_exclude',
+        'm2epro_amazon_order',
+        'm2epro_amazon_order_item',
+        'm2epro_listing_log',
+        'm2epro_operation_history',
+        'm2epro_order',
+        'm2epro_order_item',
+        'm2epro_order_log',
+        'm2epro_synchronization_log',
+        'magemonkey_last_order',
+        'newsletter_subscriber',
+        'paradoxlabs_stored_card',
     ];
 
     public function __construct(Connection $connection, Utilities $utilities, array $properties = [])
