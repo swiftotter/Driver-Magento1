@@ -17,38 +17,53 @@
  * @package default
  **/
 
-namespace Driver\Commands\Transformations\Magento1;
+namespace Driver\Magento1\Transformations;
 
 use Driver\Commands\CommandInterface;
 use Driver\Engines\MySql\Sandbox\Connection;
 use Driver\Engines\MySql\Sandbox\Utilities;
-use Driver\Pipes\Transport\TransportInterface;
+use Driver\Pipeline\Environment\EnvironmentInterface;
+use Driver\Pipeline\Transport\TransportInterface;
 use Symfony\Component\Console\Command\Command;
 
 class ClearReports extends Command implements CommandInterface
 {
-    private $connection;
-    private $utilities;
+    use ClearTrait;
 
-    public function __construct(Connection $connection, Utilities $utilities)
+    private $connection;
+    protected $utilities;
+    private $properties;
+
+    protected $tablesToClear = [
+        'report_compared_product_index',
+        'report_event',
+        'report_event_types',
+        'report_viewed_product_aggregated_daily',
+        'report_viewed_product_aggregated_monthly',
+        'report_viewed_product_aggregated_yearly',
+        'report_viewed_product_index',
+        'sales_bestsellers_aggregated_daily',
+        'sales_bestsellers_aggregated_monthly',
+        'sales_bestsellers_aggregated_yearly',
+        'adminnotification_inbox'
+    ];
+
+    public function __construct(Connection $connection, Utilities $utilities, array $properties = [])
     {
         $this->connection = $connection->getConnection();
         $this->utilities = $utilities;
+        $this->properties = $properties;
 
         parent::__construct('mysql-transformations-clear-orders');
     }
 
-    public function go(TransportInterface $transport)
+    public function getProperties()
     {
-        $this->utilities->clearTable($this->utilities->tableName('report_compared_product_index'));
-        $this->utilities->clearTable($this->utilities->tableName('report_event'));
-        $this->utilities->clearTable($this->utilities->tableName('report_event_types'));
-        $this->utilities->clearTable($this->utilities->tableName('mage_report_viewed_product_aggregated_daily'));
-        $this->utilities->clearTable($this->utilities->tableName('mage_report_viewed_product_aggregated_monthly'));
-        $this->utilities->clearTable($this->utilities->tableName('mage_report_viewed_product_aggregated_yearly'));
-        $this->utilities->clearTable($this->utilities->tableName('mage_report_viewed_product_index'));
-        $this->utilities->clearTable($this->utilities->tableName('mage_sales_bestsellers_aggregated_daily'));
-        $this->utilities->clearTable($this->utilities->tableName('mage_sales_bestsellers_aggregated_monthly'));
-        $this->utilities->clearTable($this->utilities->tableName('mage_sales_bestsellers_aggregated_yearly'));
+        return $this->properties;
+    }
+
+    public function go(TransportInterface $transport, EnvironmentInterface $environment)
+    {
+        $this->clear($environment);
     }
 }

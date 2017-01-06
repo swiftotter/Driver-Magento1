@@ -17,31 +17,49 @@
  * @package default
  **/
 
-namespace Driver\Commands\Transformations\Magento1;
+namespace Driver\Magento1\Transformations;
 
 use Driver\Commands\CommandInterface;
 use Driver\Engines\MySql\Sandbox\Connection;
 use Driver\Engines\MySql\Sandbox\Utilities;
-use Driver\Pipes\Transport\TransportInterface;
+use Driver\Pipeline\Environment\EnvironmentInterface;
+use Driver\Pipeline\Transport\TransportInterface;
 use Symfony\Component\Console\Command\Command;
 
 class ClearQuotes extends Command implements CommandInterface
 {
+    use ClearTrait;
+
     private $connection;
-    private $utilities;
+    protected $utilities;
+    private $properties;
 
-    const QUOTE_TABLE_NAME = 'sales_flat_quote';
+    protected $tablesToClear = [
+        'sales_flat_quote',
+        'sales_flat_quote_address',
+        'sales_flat_quote_address_item',
+        'sales_flat_quote_item',
+        'sales_flat_quote_item_option',
+        'sales_flat_quote_payment',
+        'sales_flat_quote_shipping_rate'
+    ];
 
-    public function __construct(Connection $connection, Utilities $utilities)
+    public function __construct(Connection $connection, Utilities $utilities, array $properties = [])
     {
         $this->connection = $connection->getConnection();
         $this->utilities = $utilities;
+        $this->properties = $properties;
 
         parent::__construct('mysql-transformations-clear-orders');
     }
 
-    public function go(TransportInterface $transport)
+    public function getProperties()
     {
-        $this->utilities->clearTable($this->utilities->tableName(self::QUOTE_TABLE_NAME));
+        return $this->properties;
+    }
+
+    public function go(TransportInterface $transport, EnvironmentInterface $environment)
+    {
+        $this->clear($environment);
     }
 }

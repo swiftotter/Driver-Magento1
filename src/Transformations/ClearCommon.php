@@ -26,7 +26,7 @@ use Driver\Pipeline\Environment\EnvironmentInterface;
 use Driver\Pipeline\Transport\TransportInterface;
 use Symfony\Component\Console\Command\Command;
 
-class ClearCustomers extends Command implements CommandInterface
+class ClearCommon extends Command implements CommandInterface
 {
     use ClearTrait;
 
@@ -35,18 +35,18 @@ class ClearCustomers extends Command implements CommandInterface
     private $properties;
 
     protected $tablesToClear = [
-        'customer_address_entity',
-        'customer_address_entity_datetime',
-        'customer_address_entity_decimal',
-        'customer_address_entity_int',
-        'customer_address_entity_text',
-        'customer_address_entity_varchar',
-        'customer_entity',
-        'customer_entity_datetime',
-        'customer_entity_decimal',
-        'customer_entity_int',
-        'customer_entity_text',
-        'customer_entity_varchar'
+        'authnetcim_card_exclude',
+        'm2epro_amazon_order',
+        'm2epro_amazon_order_item',
+        'm2epro_listing_log',
+        'm2epro_operation_history',
+        'm2epro_order',
+        'm2epro_order_item',
+        'm2epro_order_log',
+        'm2epro_synchronization_log',
+        'magemonkey_last_order',
+        'newsletter_subscriber',
+        'paradoxlabs_stored_card',
     ];
 
     public function __construct(Connection $connection, Utilities $utilities, array $properties = [])

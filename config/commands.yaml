@@ -9,3 +9,7 @@ commands:
     class: \Driver\Magento1\Transformations\ClearQuotes
   m1-clear-reports:
     class: \Driver\Magento1\Transformations\ClearReports
+  m1-clear-common:
+    class: \Driver\Magento1\Transformations\ClearCommon
+  m1-clear-swiftotter:
+    class: \Driver\Magento1\Transformations\ClearSwiftOtter

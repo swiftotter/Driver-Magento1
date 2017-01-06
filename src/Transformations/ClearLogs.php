@@ -17,37 +17,52 @@
  * @package default
  **/
 
-namespace Driver\Commands\Transformations\Magento1;
+namespace Driver\Magento1\Transformations;
 
 use Driver\Commands\CommandInterface;
 use Driver\Engines\MySql\Sandbox\Connection;
 use Driver\Engines\MySql\Sandbox\Utilities;
-use Driver\Pipes\Transport\TransportInterface;
+use Driver\Pipeline\Environment\EnvironmentInterface;
+use Driver\Pipeline\Transport\TransportInterface;
 use Symfony\Component\Console\Command\Command;
 
 class ClearLogs extends Command implements CommandInterface
 {
-    private $connection;
-    private $utilities;
+    use ClearTrait;
 
-    public function __construct(Connection $connection, Utilities $utilities)
+    private $connection;
+    protected $utilities;
+    private $properties;
+
+    protected $tablesToClear = [
+        'log_customer',
+        'log_quote',
+        'log_summary',
+        'log_summary_type',
+        'log_url',
+        'log_url_info',
+        'log_visitor',
+        'log_visitor_info',
+        'log_visitor_online',
+        'index_event'
+    ];
+
+    public function __construct(Connection $connection, Utilities $utilities, array $properties = [])
     {
         $this->connection = $connection->getConnection();
         $this->utilities = $utilities;
+        $this->properties = $properties;
 
         parent::__construct('mysql-transformations-clear-orders');
     }
 
-    public function go(TransportInterface $transport)
+    public function getProperties()
     {
-        $this->utilities->clearTable($this->utilities->tableName('mage_log_customer'));
-        $this->utilities->clearTable($this->utilities->tableName('mage_log_quote'));
-        $this->utilities->clearTable($this->utilities->tableName('mage_log_summary'));
-        $this->utilities->clearTable($this->utilities->tableName('mage_log_summary_type'));
-        $this->utilities->clearTable($this->utilities->tableName('mage_log_url'));
-        $this->utilities->clearTable($this->utilities->tableName('mage_log_url_info'));
-        $this->utilities->clearTable($this->utilities->tableName('mage_log_visitor'));
-        $this->utilities->clearTable($this->utilities->tableName('mage_log_visitor_info'));
-        $this->utilities->clearTable($this->utilities->tableName('mage_log_visitor_online'));
+        return $this->properties;
+    }
+
+    public function go(TransportInterface $transport, EnvironmentInterface $environment)
+    {
+        $this->clear($environment);
     }
 }
