@@ -6,7 +6,7 @@
         "swiftotter/driver": "*"
     },
     "autoload": {
-        "psr-4": {"Driver\\": "src/"}
+        "psr-4": {"Driver\\Magento1\\": "src/"}
     },
     "authors": [
         {
