@@ -23,6 +23,7 @@ use Driver\Commands\CommandInterface;
 use Driver\Engines\MySql\Sandbox\Connection;
 use Driver\Engines\MySql\Sandbox\Utilities;
 use Driver\Pipeline\Environment\EnvironmentInterface;
+use Driver\Pipeline\Transport\Status;
 use Driver\Pipeline\Transport\TransportInterface;
 use Symfony\Component\Console\Command\Command;
 
@@ -30,7 +31,6 @@ class ClearCustomers extends Command implements CommandInterface
 {
     use ClearTrait;
 
-    private $connection;
     protected $utilities;
     private $properties;
 
@@ -49,13 +49,12 @@ class ClearCustomers extends Command implements CommandInterface
         'customer_entity_varchar'
     ];
 
-    public function __construct(Connection $connection, Utilities $utilities, array $properties = [])
+    public function __construct(Utilities $utilities, array $properties = [])
     {
-        $this->connection = $connection->getConnection();
         $this->utilities = $utilities;
         $this->properties = $properties;
 
-        parent::__construct('mysql-transformations-clear-orders');
+        parent::__construct('mysql-transformations-clear-customers');
     }
 
     public function getProperties()
@@ -66,5 +65,6 @@ class ClearCustomers extends Command implements CommandInterface
     public function go(TransportInterface $transport, EnvironmentInterface $environment)
     {
         $this->clear($environment);
+        return $transport->withStatus(new Status('mysql-transformations-clear-customers', 'success'));
     }
 }

@@ -23,6 +23,7 @@ use Driver\Commands\CommandInterface;
 use Driver\Engines\MySql\Sandbox\Connection;
 use Driver\Engines\MySql\Sandbox\Utilities;
 use Driver\Pipeline\Environment\EnvironmentInterface;
+use Driver\Pipeline\Transport\Status;
 use Driver\Pipeline\Transport\TransportInterface;
 use Symfony\Component\Console\Command\Command;
 
@@ -30,7 +31,6 @@ class ClearOrders extends Command implements CommandInterface
 {
     use ClearTrait;
 
-    private $connection;
     protected $utilities;
     private $properties;
 
@@ -69,9 +69,8 @@ class ClearOrders extends Command implements CommandInterface
         'report_event',
     ];
 
-    public function __construct(Connection $connection, Utilities $utilities, array $properties = [])
+    public function __construct(Utilities $utilities, array $properties = [])
     {
-        $this->connection = $connection->getConnection();
         $this->utilities = $utilities;
         $this->properties = $properties;
 
@@ -86,5 +85,6 @@ class ClearOrders extends Command implements CommandInterface
     public function go(TransportInterface $transport, EnvironmentInterface $environment)
     {
         $this->clear($environment);
+        return $transport->withStatus(new Status('mysql-transformations-clear-orders', 'success'));
     }
 }
